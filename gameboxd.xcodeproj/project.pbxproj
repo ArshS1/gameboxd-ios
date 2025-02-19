@@ -7,18 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E92A736B2D665BB700656113 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92A736A2D665BA600656113 /* LoginScreen.swift */; };
 		E9F8FA312D6191E5001955C9 /* gameboxdApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F8FA302D6191E5001955C9 /* gameboxdApp.swift */; };
 		E9F8FA332D6191E5001955C9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F8FA322D6191E5001955C9 /* ContentView.swift */; };
 		E9F8FA352D6191EA001955C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9F8FA342D6191EA001955C9 /* Assets.xcassets */; };
 		E9F8FA382D6191EA001955C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9F8FA372D6191EA001955C9 /* Preview Assets.xcassets */; };
+		E9FC3F312D63A48F00EB1130 /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FC3F302D63A48800EB1130 /* Welcome.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E92A73692D66594C00656113 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E92A736A2D665BA600656113 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		E9F8FA2D2D6191E5001955C9 /* gameboxd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gameboxd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9F8FA302D6191E5001955C9 /* gameboxdApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gameboxdApp.swift; sourceTree = "<group>"; };
 		E9F8FA322D6191E5001955C9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E9F8FA342D6191EA001955C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E9F8FA372D6191EA001955C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E9FC3F302D63A48800EB1130 /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +56,10 @@
 		E9F8FA2F2D6191E5001955C9 /* gameboxd */ = {
 			isa = PBXGroup;
 			children = (
+				E92A73692D66594C00656113 /* Info.plist */,
 				E9F8FA302D6191E5001955C9 /* gameboxdApp.swift */,
+				E9FC3F302D63A48800EB1130 /* Welcome.swift */,
+				E92A736A2D665BA600656113 /* LoginScreen.swift */,
 				E9F8FA322D6191E5001955C9 /* ContentView.swift */,
 				E9F8FA342D6191EA001955C9 /* Assets.xcassets */,
 				E9F8FA362D6191EA001955C9 /* Preview Content */,
@@ -111,6 +119,10 @@
 				Base,
 			);
 			mainGroup = E9F8FA242D6191E5001955C9;
+			packageReferences = (
+				E9F8FA3E2D6192C4001955C9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E9F8FA3F2D6192EB001955C9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			productRefGroup = E9F8FA2E2D6191E5001955C9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,6 +149,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9FC3F312D63A48F00EB1130 /* Welcome.swift in Sources */,
+				E92A736B2D665BB700656113 /* LoginScreen.swift in Sources */,
 				E9F8FA332D6191E5001955C9 /* ContentView.swift in Sources */,
 				E9F8FA312D6191E5001955C9 /* gameboxdApp.swift in Sources */,
 			);
@@ -270,6 +284,7 @@
 				DEVELOPMENT_TEAM = 8W7WLYS786;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = gameboxd/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +314,7 @@
 				DEVELOPMENT_TEAM = 8W7WLYS786;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = gameboxd/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -339,6 +355,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E9F8FA3E2D6192C4001955C9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+		E9F8FA3F2D6192EB001955C9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = E9F8FA252D6191E5001955C9 /* Project object */;
 }
