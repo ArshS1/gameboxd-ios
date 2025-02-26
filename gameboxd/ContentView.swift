@@ -37,6 +37,7 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         Text("Upcoming Games")
                             .font(.headline)
+                            .fontWeight(.bold)
                             .padding(.leading)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -74,6 +75,7 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         Text("Popular Games")
                             .font(.headline)
+                            .fontWeight(.bold)
                             .padding(.leading)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -111,6 +113,7 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         Text("New Games")
                             .font(.headline)
+                            .fontWeight(.bold)
                             .padding(.leading)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -186,7 +189,10 @@ struct ContentView: View {
                 Spacer()
             }
             .background(Color(.systemGray6))
+            .padding(.bottom, 10)
         }
+        .background(Color(.systemGray5))
+        .edgesIgnoringSafeArea(.bottom)
     }
     
     func fetchUpcomingGames() {
