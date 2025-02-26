@@ -20,179 +20,192 @@ struct ContentView: View {
     @State private var upcomingGames: [Game] = []
     @State private var popularGames: [Game] = []
     @State private var newGames: [Game] = []
+    @State private var isSearchActive = false
     
     var body: some View {
-        VStack {
-            if selectedTab == 0 {
-                // Main Content
-                VStack {
-                    // Search Bar
-                    TextField("Search...", text: $searchText)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .padding(.horizontal)
-                    
-                    // Upcoming Games
-                    VStack(alignment: .leading) {
-                        Text("Upcoming Games")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .padding(.leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20) {
-                                ForEach(upcomingGames) { game in
-                                    VStack {
-                                        AsyncImage(url: URL(string: game.cover)) { image in
-                                            image.resizable()
-                                                .scaledToFit()
-                                                .frame(width: 100, height: 150)
-                                                .cornerRadius(10)
-                                        } placeholder: {
-                                            ProgressView()
-                                        }
-                                        Text(game.name)
-                                            .font(.caption)
-                                            .lineLimit(1)
-                                        Text(game.release_date)
-                                            .font(.caption2)
-                                            .foregroundColor(.gray)
-                                    }
-                                    .frame(width: 100)
+        NavigationView {
+            VStack {
+                if selectedTab == 0 {
+                    // Main Content
+                    ScrollView {
+                        VStack {
+                            // Search Bar
+                            HStack {
+                                TextField("Search...", text: $searchText, onCommit: {
+                                    isSearchActive = true
+                                })
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .cornerRadius(10)
+                                .padding(.horizontal)
+                                
+                                NavigationLink(destination: SearchView(searchText: searchText), isActive: $isSearchActive) {
+                                    EmptyView()
                                 }
                             }
-                            .padding(.horizontal)
-                        }
-                        .frame(height: 200)
-                    }
-                    .background(Color(.systemGray5))
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                    .padding(.top)
-                    
-                    // Popular Games
-                    VStack(alignment: .leading) {
-                        Text("Popular Games")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .padding(.leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20) {
-                                ForEach(popularGames) { game in
-                                    VStack {
-                                        AsyncImage(url: URL(string: game.cover)) { image in
-                                            image.resizable()
-                                                .scaledToFit()
-                                                .frame(width: 100, height: 150)
-                                                .cornerRadius(10)
-                                        } placeholder: {
-                                            ProgressView()
+                            
+                            // Upcoming Games
+                            VStack(alignment: .leading) {
+                                Text("Upcoming Games")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .padding(.leading)
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 20) {
+                                        ForEach(upcomingGames) { game in
+                                            VStack {
+                                                AsyncImage(url: URL(string: game.cover)) { image in
+                                                    image.resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 100, height: 150)
+                                                        .cornerRadius(10)
+                                                } placeholder: {
+                                                    ProgressView()
+                                                }
+                                                Text(game.name)
+                                                    .font(.caption)
+                                                    .lineLimit(1)
+                                                Text(game.release_date)
+                                                    .font(.caption2)
+                                                    .foregroundColor(.gray)
+                                            }
+                                            .frame(width: 100)
                                         }
-                                        Text(game.name)
-                                            .font(.caption)
-                                            .lineLimit(1)
-                                        Text(game.release_date)
-                                            .font(.caption2)
-                                            .foregroundColor(.gray)
                                     }
-                                    .frame(width: 100)
+                                    .padding(.horizontal)
                                 }
+                                .frame(height: 200)
                             }
+                            .background(Color(.systemGray5))
+                            .cornerRadius(10)
                             .padding(.horizontal)
-                        }
-                        .frame(height: 200)
-                    }
-                    .background(Color(.systemGray5))
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                    .padding(.top)
-                    
-                    // New Games
-                    VStack(alignment: .leading) {
-                        Text("New Games")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .padding(.leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20) {
-                                ForEach(newGames) { game in
-                                    VStack {
-                                        AsyncImage(url: URL(string: game.cover)) { image in
-                                            image.resizable()
-                                                .scaledToFit()
-                                                .frame(width: 100, height: 150)
-                                                .cornerRadius(10)
-                                        } placeholder: {
-                                            ProgressView()
+                            .padding(.top)
+                            
+                            // Popular Games
+                            VStack(alignment: .leading) {
+                                Text("Popular Games")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .padding(.leading)
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 20) {
+                                        ForEach(popularGames) { game in
+                                            VStack {
+                                                AsyncImage(url: URL(string: game.cover)) { image in
+                                                    image.resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 100, height: 150)
+                                                        .cornerRadius(10)
+                                                } placeholder: {
+                                                    ProgressView()
+                                                }
+                                                Text(game.name)
+                                                    .font(.caption)
+                                                    .lineLimit(1)
+                                                Text(game.release_date)
+                                                    .font(.caption2)
+                                                    .foregroundColor(.gray)
+                                            }
+                                            .frame(width: 100)
                                         }
-                                        Text(game.name)
-                                            .font(.caption)
-                                            .lineLimit(1)
-                                        Text(game.release_date)
-                                            .font(.caption2)
-                                            .foregroundColor(.gray)
                                     }
-                                    .frame(width: 100)
+                                    .padding(.horizontal)
                                 }
+                                .frame(height: 200)
                             }
+                            .background(Color(.systemGray5))
+                            .cornerRadius(10)
                             .padding(.horizontal)
+                            .padding(.top)
+                            
+                            // New Games
+                            VStack(alignment: .leading) {
+                                Text("New Games")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .padding(.leading)
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 20) {
+                                        ForEach(newGames) { game in
+                                            VStack {
+                                                AsyncImage(url: URL(string: game.cover)) { image in
+                                                    image.resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 100, height: 150)
+                                                        .cornerRadius(10)
+                                                } placeholder: {
+                                                    ProgressView()
+                                                }
+                                                Text(game.name)
+                                                    .font(.caption)
+                                                    .lineLimit(1)
+                                                Text(game.release_date)
+                                                    .font(.caption2)
+                                                    .foregroundColor(.gray)
+                                            }
+                                            .frame(width: 100)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                                .frame(height: 200)
+                            }
+                            .background(Color(.systemGray5))
+                            .cornerRadius(10)
+                            .padding(.horizontal)
+                            .padding(.top)
+                            
+                            Spacer()
                         }
-                        .frame(height: 200)
+                        .onAppear {
+                            fetchUpcomingGames()
+                            fetchPopularGames()
+                            fetchNewGames()
+                        }
                     }
-                    .background(Color(.systemGray5))
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                    .padding(.top)
+                } else {
+                    // User Profile Section
+                    UserView()
+                }
+                
+                // Tab Bar
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        selectedTab = 0
+                    }) {
+                        VStack {
+                            Image(systemName: "list.bullet")
+                            Text("Feed")
+                        }
+                    }
+                    .padding()
+                    .foregroundColor(selectedTab == 0 ? .blue : .gray)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        selectedTab = 1
+                    }) {
+                        VStack {
+                            Image(systemName: "person.circle")
+                            Text("Profile")
+                        }
+                    }
+                    .padding()
+                    .foregroundColor(selectedTab == 1 ? .blue : .gray)
                     
                     Spacer()
                 }
-                .onAppear {
-                    fetchUpcomingGames()
-                    fetchPopularGames()
-                    fetchNewGames()
-                }
-            } else {
-                // User Profile Section
-                UserView()
+                .background(Color(.systemGray6))
+                .padding(.bottom, 10)
             }
-            
-            // Tab Bar
-            HStack {
-                Spacer()
-                Button(action: {
-                    selectedTab = 0
-                }) {
-                    VStack {
-                        Image(systemName: "list.bullet")
-                        Text("Feed")
-                    }
-                }
-                .padding()
-                .foregroundColor(selectedTab == 0 ? .blue : .gray)
-                
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 1
-                }) {
-                    VStack {
-                        Image(systemName: "person.circle")
-                        Text("Profile")
-                    }
-                }
-                .padding()
-                .foregroundColor(selectedTab == 1 ? .blue : .gray)
-                
-                Spacer()
-            }
-            .background(Color(.systemGray6))
-            .padding(.bottom, 10)
+            .background(Color(.systemGray5))
+            .edgesIgnoringSafeArea(.bottom)
         }
-        .background(Color(.systemGray5))
-        .edgesIgnoringSafeArea(.bottom)
     }
     
     func fetchUpcomingGames() {
