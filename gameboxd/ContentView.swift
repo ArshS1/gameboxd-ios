@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-struct Game: Identifiable, Decodable {
-    let id: Int
-    let name: String
-    let cover: String
-    let release_date: String
-}
-
 struct ContentView: View {
     @State private var searchText = ""
     @State private var selectedTab = 0
@@ -21,6 +14,8 @@ struct ContentView: View {
     @State private var popularGames: [Game] = []
     @State private var newGames: [Game] = []
     @State private var isSearchActive = false
+    @State private var selectedGame: Game?
+    @State private var showDetailView = false
     
     var body: some View {
         NavigationView {
@@ -66,11 +61,15 @@ struct ContentView: View {
                                                 Text(game.name)
                                                     .font(.caption)
                                                     .lineLimit(1)
-                                                Text(game.release_date)
+                                                Text(game.release_date ?? "Release date not available")
                                                     .font(.caption2)
                                                     .foregroundColor(.gray)
                                             }
                                             .frame(width: 100)
+                                            .onTapGesture {
+                                                selectedGame = game
+                                                showDetailView = true
+                                            }
                                         }
                                     }
                                     .padding(.horizontal)
@@ -104,11 +103,15 @@ struct ContentView: View {
                                                 Text(game.name)
                                                     .font(.caption)
                                                     .lineLimit(1)
-                                                Text(game.release_date)
+                                                Text(game.release_date ?? "Release date not available")
                                                     .font(.caption2)
                                                     .foregroundColor(.gray)
                                             }
                                             .frame(width: 100)
+                                            .onTapGesture {
+                                                selectedGame = game
+                                                showDetailView = true
+                                            }
                                         }
                                     }
                                     .padding(.horizontal)
@@ -142,11 +145,15 @@ struct ContentView: View {
                                                 Text(game.name)
                                                     .font(.caption)
                                                     .lineLimit(1)
-                                                Text(game.release_date)
+                                                Text(game.release_date ?? "Release date not available")
                                                     .font(.caption2)
                                                     .foregroundColor(.gray)
                                             }
                                             .frame(width: 100)
+                                            .onTapGesture {
+                                                selectedGame = game
+                                                showDetailView = true
+                                            }
                                         }
                                     }
                                     .padding(.horizontal)
@@ -205,6 +212,11 @@ struct ContentView: View {
             }
             .background(Color(.systemGray5))
             .edgesIgnoringSafeArea(.bottom)
+            .sheet(isPresented: $showDetailView) {
+                if let game = selectedGame {
+                    GameDetailView(gameId: game.id, isPresented: $showDetailView)
+                }
+            }
         }
     }
     
