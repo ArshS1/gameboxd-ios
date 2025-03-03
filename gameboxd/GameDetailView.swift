@@ -83,26 +83,7 @@ struct GameDetailView: View {
                         }
                     }
                 } else {
-                    VStack {
-                        Text("Failed to load game details.")
-                            .font(.title2)
-                            .foregroundColor(.red)
-                            .padding()
-
-                        Button(action: {
-                            isPresented = false
-                        }) {
-                            Text("Close")
-                                .font(.title2)
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.red)
-                                .cornerRadius(10)
-                                .padding(.horizontal, 40)
-                        }
-                        .padding(.top, 20)
-                    }
+                    
                 }
                 Spacer()
             }
