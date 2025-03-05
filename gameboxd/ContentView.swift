@@ -34,7 +34,7 @@ struct ContentView: View {
                                 .cornerRadius(10)
                                 .padding(.horizontal)
                                 
-                                NavigationLink(destination: SearchView(searchText: searchText), isActive: $isSearchActive) {
+                                NavigationLink(destination: SearchView(searchText: searchText).navigationBarBackButtonHidden(true), isActive: $isSearchActive) {
                                     EmptyView()
                                 }
                             }
@@ -68,7 +68,9 @@ struct ContentView: View {
                                             .frame(width: 100)
                                             .onTapGesture {
                                                 selectedGame = game
-                                                showDetailView = true
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                    showDetailView = true
+                                                }
                                             }
                                         }
                                     }
@@ -110,7 +112,9 @@ struct ContentView: View {
                                             .frame(width: 100)
                                             .onTapGesture {
                                                 selectedGame = game
-                                                showDetailView = true
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                    showDetailView = true
+                                                }
                                             }
                                         }
                                     }
@@ -152,7 +156,9 @@ struct ContentView: View {
                                             .frame(width: 100)
                                             .onTapGesture {
                                                 selectedGame = game
-                                                showDetailView = true
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                    showDetailView = true
+                                                }
                                             }
                                         }
                                     }

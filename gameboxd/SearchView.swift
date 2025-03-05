@@ -10,9 +10,10 @@ import SwiftUI
 struct SearchView: View {
     @State private var searchResults: [Game] = []
     @State private var selectedGame: Game?
-    @State private var showModal = false
     @State private var isLoading = false
+    @State private var isPresented = false
     var searchText: String
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
@@ -26,37 +27,46 @@ struct SearchView: View {
                         .padding()
                 } else {
                     List(searchResults) { game in
-                        HStack {
-                            AsyncImage(url: URL(string: game.cover)) { image in
-                                image.resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 75)
-                                    .cornerRadius(10)
-                            } placeholder: {
-                                ProgressView()
+                        NavigationLink(destination: GameDetailView(gameId: game.id, isPresented: $isPresented)
+                                        .navigationBarBackButtonHidden(true)
+                                        .navigationBarItems(leading: BackButton())) {
+                            HStack {
+                                AsyncImage(url: URL(string: game.cover)) { image in
+                                    image.resizable()
+                                        .scaledToFit()
+                                        .frame(width: 50, height: 75)
+                                        .cornerRadius(10)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                VStack(alignment: .leading) {
+                                    Text(game.name)
+                                        .font(.headline)
+                                }
                             }
-                            VStack(alignment: .leading) {
-                                Text(game.name)
-                                    .font(.headline)
-                            }
-                        }
-                        .onTapGesture {
-                            selectedGame = game
-                            showModal = true
                         }
                     }
                 }
             }
+            Spacer()
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }) {
+                Text("Back to Main Page")
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+                    .padding(.horizontal, 40)
+            }
+            .padding(.bottom, 20)
         }
         .onAppear {
             fetchSearchResults()
         }
         .navigationTitle("Search Results")
-        .sheet(isPresented: $showModal) {
-            if let game = selectedGame {
-                GameDetailView(gameId: game.id, isPresented: $showModal)
-        }
-    }
     }
     
     func fetchSearchResults() {
@@ -101,6 +111,21 @@ struct SearchView: View {
                 }
             }
         }.resume()
+    }
+}
+
+struct BackButton: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(systemName: "chevron.left")
+                Text("Back to Search Results")
+            }
+        }
     }
 }
 

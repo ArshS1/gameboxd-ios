@@ -11,6 +11,7 @@ import GoogleSignIn
 struct UserView: View {
     @State private var userName: String = ""
     @State private var userProfileImageURL: URL?
+    @AppStorage("isSignedIn") private var isSignedIn = true
     
     var body: some View {
         VStack {
@@ -60,6 +61,7 @@ struct UserView: View {
     
     func signOut() {
         GIDSignIn.sharedInstance.signOut()
+        isSignedIn = false
         // Handle additional sign-out logic if needed
     }
 }
