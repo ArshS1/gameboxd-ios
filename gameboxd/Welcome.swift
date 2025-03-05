@@ -1,16 +1,10 @@
-//
-//  Welcome.swift
-//  gameboxd
-//
-//  Created by Arshdeep Singh on 2/17/25.
-//
-
 import SwiftUI
 import GoogleSignIn
 
 struct WelcomeView: View {
     @Environment(\.openURL) var openURL
-    @State private var isSignedIn = false
+    @AppStorage("isSignedIn") private var isSignedIn = false
+    @State private var scale: CGFloat = 1.0
     
     var body: some View {
         NavigationView {
@@ -30,6 +24,12 @@ struct WelcomeView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 300, height: 300) // Larger logo
+                        .scaleEffect(scale)
+                        .onAppear {
+                            withAnimation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                                scale = 1.2
+                            }
+                        }
                     
                     Spacer()
                     
@@ -62,6 +62,9 @@ struct WelcomeView: View {
                     }
                 }
             }
+            .onAppear {
+                restorePreviousSignIn()
+            }
             .onOpenURL { url in
                 GIDSignIn.sharedInstance.handle(url)
             }
@@ -86,6 +89,23 @@ struct WelcomeView: View {
             
             isSignedIn = true
             print("User signed in: \(result.user.profile?.name ?? "No Name")")
+        }
+    }
+    
+    func restorePreviousSignIn() {
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+            if let error = error {
+                print("Failed to restore previous sign-in: \(error.localizedDescription)")
+                isSignedIn = false
+                return
+            }
+            
+            if user != nil {
+                isSignedIn = true
+                print("User session restored: \(user?.profile?.name ?? "No Name")")
+            } else {
+                isSignedIn = false
+            }
         }
     }
 }

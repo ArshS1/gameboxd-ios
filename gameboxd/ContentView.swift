@@ -173,14 +173,16 @@ struct ContentView: View {
                             fetchNewGames()
                         }
                     }
-                } else {
+                } else if selectedTab == 1 {
                     // User Profile Section
                     UserView()
+                } else if selectedTab == 2 {
+                    // Favorites Section
+                    FavoriteView()
                 }
                 
                 // Tab Bar
                 HStack {
-                    Spacer()
                     Button(action: {
                         selectedTab = 0
                     }) {
@@ -188,11 +190,10 @@ struct ContentView: View {
                             Image(systemName: "list.bullet")
                             Text("Feed")
                         }
+                        .frame(maxWidth: .infinity)
                     }
                     .padding()
                     .foregroundColor(selectedTab == 0 ? .blue : .gray)
-                    
-                    Spacer()
                     
                     Button(action: {
                         selectedTab = 1
@@ -201,11 +202,22 @@ struct ContentView: View {
                             Image(systemName: "person.circle")
                             Text("Profile")
                         }
+                        .frame(maxWidth: .infinity)
                     }
                     .padding()
                     .foregroundColor(selectedTab == 1 ? .blue : .gray)
                     
-                    Spacer()
+                    Button(action: {
+                        selectedTab = 2
+                    }) {
+                        VStack {
+                            Image(systemName: "star.fill")
+                            Text("Favorites")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .padding()
+                    .foregroundColor(selectedTab == 2 ? .blue : .gray)
                 }
                 .background(Color(.systemGray6))
                 .padding(.bottom, 10)
