@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct GameDetailView: View {
-    var gameId: Int  
+    var gameId: Int
     @Binding var isPresented: Bool
     @State private var game: Game?
     @State private var isLoading = true
     @State private var urlString: String = ""
+    @State private var isFavorite = false
 
     var body: some View {
         ZStack {
@@ -80,6 +81,21 @@ struct GameDetailView: View {
                                     .padding(.bottom, 2)
                                 }
                             }
+
+                            Button(action: {
+                                toggleFavorite()
+                            }) {
+                                HStack {
+                                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                                        .foregroundColor(isFavorite ? .red : .gray)
+                                    Text(isFavorite ? "Unfavorite" : "Favorite")
+                                        .foregroundColor(.black)
+                                }
+                                .padding()
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                            }
+                            .padding(.top, 20)
                         }
                     }
                 } else {
@@ -99,6 +115,7 @@ struct GameDetailView: View {
         }
         .onAppear {
             fetchGameDetails()
+            checkIfFavorite()
         }
     }
 
@@ -106,7 +123,7 @@ struct GameDetailView: View {
         let urlString = "https://arshhhyyy.pythonanywhere.com/games/getgame/\(gameId)"
         self.urlString = urlString
 
-        guard let url = URL(string: urlString) else { 
+        guard let url = URL(string: urlString) else {
             print("Invalid URL")
             isLoading = false
             return
@@ -143,6 +160,17 @@ struct GameDetailView: View {
                 isLoading = false
             }
         }.resume()
+    }
+
+    func toggleFavorite() {
+        isFavorite.toggle()
+        saveFavoriteStatus()
+    }
+
+    func saveFavoriteStatus() {
+    }
+
+    func checkIfFavorite() {
     }
 }
 

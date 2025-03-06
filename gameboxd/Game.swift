@@ -22,7 +22,7 @@ struct Game: Identifiable, Decodable {
     let cover: String
     let release_date: String?
     let summary: String?
-    let genres: [String]? 
+    let genres: [String]?
     let platforms: [Platform]
 
     enum CodingKeys: String, CodingKey {
@@ -36,7 +36,7 @@ struct Game: Identifiable, Decodable {
     cover = try container.decode(String.self, forKey: .cover)
     release_date = try? container.decode(String.self, forKey: .release_date)
     summary = try? container.decode(String.self, forKey: .summary)
-    genres = try container.decodeIfPresent([String].self, forKey: .genres) 
+    genres = try container.decodeIfPresent([String].self, forKey: .genres)
     platforms = try container.decodeIfPresent([Platform].self, forKey: .platforms) ?? []
 }
 

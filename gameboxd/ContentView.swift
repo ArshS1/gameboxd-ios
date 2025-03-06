@@ -50,7 +50,7 @@ struct ContentView: View {
                                     HStack(spacing: 20) {
                                         ForEach(upcomingGames) { game in
                                             VStack {
-                                                AsyncImage(url: URL(string: game.cover)) { image in
+                                                AsyncImage(url: URL(string: game.cover ?? "https://gameboxd-kappa.vercel.app/images/no_cover.png")) { image in
                                                     image.resizable()
                                                         .scaledToFit()
                                                         .frame(width: 100, height: 150)
@@ -94,7 +94,7 @@ struct ContentView: View {
                                     HStack(spacing: 20) {
                                         ForEach(popularGames) { game in
                                             VStack {
-                                                AsyncImage(url: URL(string: game.cover)) { image in
+                                                AsyncImage(url: URL(string: game.cover ?? "https://gameboxd-kappa.vercel.app/images/no_cover.png")) { image in
                                                     image.resizable()
                                                         .scaledToFit()
                                                         .frame(width: 100, height: 150)
@@ -138,7 +138,7 @@ struct ContentView: View {
                                     HStack(spacing: 20) {
                                         ForEach(newGames) { game in
                                             VStack {
-                                                AsyncImage(url: URL(string: game.cover)) { image in
+                                                AsyncImage(url: URL(string: game.cover ?? "https://gameboxd-kappa.vercel.app/images/no_cover.png")) { image in
                                                     image.resizable()
                                                         .scaledToFit()
                                                         .frame(width: 100, height: 150)

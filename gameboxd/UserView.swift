@@ -12,6 +12,7 @@ struct UserView: View {
     @State private var userName: String = ""
     @State private var userProfileImageURL: URL?
     @AppStorage("isSignedIn") private var isSignedIn = true
+    @State private var showAlert = false
     
     var body: some View {
         VStack {
@@ -32,7 +33,7 @@ struct UserView: View {
                 .padding()
             
             Button(action: {
-                signOut()
+                showAlert = true
             }) {
                 Text("Sign Out")
                     .font(.title2)
@@ -44,6 +45,16 @@ struct UserView: View {
                     .padding(.horizontal, 40)
             }
             .padding(.top, 20)
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Sign Out"),
+                    message: Text("Are you sure you want to log out?"),
+                    primaryButton: .destructive(Text("Log Out")) {
+                        signOut()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
             
             Spacer()
         }

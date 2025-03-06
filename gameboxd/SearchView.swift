@@ -71,7 +71,7 @@ struct SearchView: View {
     
     func fetchSearchResults() {
         guard let searchTextEncoded = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let url = URL(string: "https://arshhhyyy.pythonanywhere.com/games/getgames?search=\(searchTextEncoded)") 
+              let url = URL(string: "https://arshhhyyy.pythonanywhere.com/games/getgames?search=\(searchTextEncoded)")
         else { return }
         
         isLoading = true
@@ -85,7 +85,7 @@ struct SearchView: View {
                     let games = rawGames.compactMap { dict -> Game? in
                         var modifiedDict = dict
                         if modifiedDict["release_date"] == nil {
-                            modifiedDict["release_date"] = "Release date not available" 
+                            modifiedDict["release_date"] = "Release date not available"
                         }
                         
                         if let jsonData = try? JSONSerialization.data(withJSONObject: modifiedDict),

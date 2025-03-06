@@ -12,50 +12,57 @@ struct FavoriteView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                Text("Favorite Games")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
+            ZStack {
+                Color(.systemGray6) // Set the background color of the entire view
+                    .edgesIgnoringSafeArea(.all) // Ensure it covers the entire screen
 
-                if favoriteGames.isEmpty {
-                    Text("No favorite games yet.")
-                        .font(.title2)
-                        .foregroundColor(.gray)
+                VStack {
+                    Text("Favorite Games")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                         .padding()
-                    Spacer()
-                } else {
-                    List(favoriteGames) { game in
-                        HStack {
-                            AsyncImage(url: URL(string: game.cover)) { image in
-                                image.resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 75)
-                                    .cornerRadius(10)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            VStack(alignment: .leading) {
-                                Text(game.name)
-                                    .font(.headline)
-                                Text(game.release_date ?? "Release date not available")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                if let genres = game.genres, !genres.isEmpty {
-                                    Text("Genres: \(genres.joined(separator: ", "))")
+                        .background(Color(.systemGray6))
+
+                    if favoriteGames.isEmpty {
+                        Text("No favorite games yet.")
+                            .font(.title2)
+                            .foregroundColor(.gray)
+                            .padding()
+                            .background(Color(.systemGray6))
+                        Spacer()
+                    } else {
+                        List(favoriteGames) { game in
+                            HStack {
+                                AsyncImage(url: URL(string: game.cover)) { image in
+                                    image.resizable()
+                                        .scaledToFit()
+                                        .frame(width: 50, height: 75)
+                                        .cornerRadius(10)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                VStack(alignment: .leading) {
+                                    Text(game.name)
+                                        .font(.headline)
+                                    Text(game.release_date ?? "Release date not available")
                                         .font(.subheadline)
                                         .foregroundColor(.gray)
+                                    if let genres = game.genres, !genres.isEmpty {
+                                        Text("Genres: \(genres.joined(separator: ", "))")
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
                                 }
                             }
                         }
                     }
+                    Spacer()
                 }
-                Spacer()
+                .onAppear {
+                    fetchFavoriteGames()
+                }
+                .navigationBarTitle("Favorites", displayMode: .inline)
             }
-            .onAppear {
-                fetchFavoriteGames()
-            }
-            .navigationBarTitle("Favorites", displayMode: .inline)
         }
     }
 
@@ -66,9 +73,8 @@ struct FavoriteView: View {
     }
 }
 
-
 struct FavoriteView_Preview: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        FavoriteView()
     }
 }
