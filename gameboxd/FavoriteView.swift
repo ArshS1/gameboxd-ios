@@ -1,20 +1,16 @@
-//
-//  FavoriteView.swift
-//  gameboxd
-//
-//  Created by Arshdeep Singh on 2/17/25.
-//
-
 import SwiftUI
+import SwiftData
 
+@available(iOS 17, *)
 struct FavoriteView: View {
-    @State private var favoriteGames: [Game] = []
+    @Environment(\.modelContext) private var modelContext
+    @Query private var favoriteGames: [FavoriteGame]
 
     var body: some View {
         NavigationView {
             ZStack {
-                Color(.systemGray6) // Set the background color of the entire view
-                    .edgesIgnoringSafeArea(.all) // Ensure it covers the entire screen
+                Color(.systemGray6)
+                    .edgesIgnoringSafeArea(.all)
 
                 VStack {
                     Text("Favorite Games")
@@ -31,50 +27,43 @@ struct FavoriteView: View {
                             .background(Color(.systemGray6))
                         Spacer()
                     } else {
-                        List(favoriteGames) { game in
-                            HStack {
-                                AsyncImage(url: URL(string: game.cover)) { image in
-                                    image.resizable()
-                                        .scaledToFit()
-                                        .frame(width: 50, height: 75)
-                                        .cornerRadius(10)
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                VStack(alignment: .leading) {
-                                    Text(game.name)
-                                        .font(.headline)
-                                    Text(game.release_date ?? "Release date not available")
-                                        .font(.subheadline)
-                                        .foregroundColor(.gray)
-                                    if let genres = game.genres, !genres.isEmpty {
-                                        Text("Genres: \(genres.joined(separator: ", "))")
+                        List {
+                            ForEach(favoriteGames) { game in
+                                HStack {
+                                    AsyncImage(url: URL(string: game.cover)) { image in
+                                        image.resizable()
+                                            .scaledToFit()
+                                            .frame(width: 50, height: 75)
+                                            .cornerRadius(10)
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    VStack(alignment: .leading) {
+                                        Text(game.name)
+                                            .font(.headline)
+                                        Text(game.release_date ?? "Release date not available")
                                             .font(.subheadline)
                                             .foregroundColor(.gray)
                                     }
                                 }
                             }
+                            .onDelete(perform: deleteFavorite)
                         }
                     }
                     Spacer()
                 }
-                .onAppear {
-                    fetchFavoriteGames()
-                }
                 .navigationBarTitle("Favorites", displayMode: .inline)
+                .toolbar {
+                    EditButton()
+                }
             }
         }
     }
 
-    func fetchFavoriteGames() {
-        favoriteGames = [
-            // Add your favorite games here
-        ]
-    }
-}
-
-struct FavoriteView_Preview: PreviewProvider {
-    static var previews: some View {
-        FavoriteView()
+    func deleteFavorite(at offsets: IndexSet) {
+        for index in offsets {
+            let gameToDelete = favoriteGames[index]
+            modelContext.delete(gameToDelete)
+        }
     }
 }

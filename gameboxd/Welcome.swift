@@ -1,6 +1,7 @@
 import SwiftUI
 import GoogleSignIn
 
+@available(iOS 17, *)
 struct WelcomeView: View {
     @Environment(\.openURL) var openURL
     @AppStorage("isSignedIn") private var isSignedIn = false
@@ -110,6 +111,7 @@ struct WelcomeView: View {
     }
 }
 
+@available(iOS 17, *)
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView()

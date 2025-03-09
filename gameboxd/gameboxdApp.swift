@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+@available(iOS 17, *)
 @main
 struct gameboxdApp: App {
     var body: some Scene {
         WindowGroup {
             WelcomeView()
+                .modelContainer(for: FavoriteGame.self)
         }
     }
 }

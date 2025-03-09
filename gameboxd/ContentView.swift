@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 17, *)
 struct ContentView: View {
     @State private var searchText = ""
     @State private var selectedTab = 0
@@ -290,6 +291,7 @@ struct ContentView: View {
     }
 }
 
+@available(iOS 17, *)
 struct ContentView_Preview: PreviewProvider {
     static var previews: some View {
         ContentView()

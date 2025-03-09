@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 17, *)
 struct SearchView: View {
     @State private var searchResults: [Game] = []
     @State private var selectedGame: Game?
@@ -129,6 +130,7 @@ struct BackButton: View {
     }
 }
 
+@available(iOS 17, *)
 struct SearchView_Preview: PreviewProvider {
     static var previews: some View {
         SearchView(searchText: "Fifa")

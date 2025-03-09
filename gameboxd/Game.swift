@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Platform: Decodable {
+
+struct Platform: Codable {
     let name: String
     let logo_url: String?
 }

@@ -1,15 +1,13 @@
-//
-//  GameDetailView.swift
-//  gameboxd
-//
-//  Created by Arshdeep Singh on 2/17/25.
-//
-
 import SwiftUI
+import SwiftData
 
+@available(iOS 17, *)
 struct GameDetailView: View {
     var gameId: Int
     @Binding var isPresented: Bool
+    @Environment(\.modelContext) private var modelContext
+    @Query private var favoriteGames: [FavoriteGame]
+
     @State private var game: Game?
     @State private var isLoading = true
     @State private var urlString: String = ""
@@ -98,8 +96,6 @@ struct GameDetailView: View {
                             .padding(.top, 20)
                         }
                     }
-                } else {
-                    
                 }
                 Spacer()
             }
@@ -119,6 +115,7 @@ struct GameDetailView: View {
         }
     }
 
+    // Fetch game details from API
     func fetchGameDetails() {
         let urlString = "https://arshhhyyy.pythonanywhere.com/games/getgame/\(gameId)"
         self.urlString = urlString
@@ -139,14 +136,10 @@ struct GameDetailView: View {
 
                 if let data = data {
                     do {
-                        if let jsonString = String(data: data, encoding: .utf8) {
-                            print("🔹 Raw JSON Response: \(jsonString)")
-                        }
-
                         let decodedDictionary = try JSONDecoder().decode([String: Game].self, from: data)
-                        
                         if let game = decodedDictionary.values.first {
                             self.game = game
+                            checkIfFavorite() // Ensure favorite status is checked when game loads
                         } else {
                             print("Error: No game found")
                         }
@@ -162,20 +155,43 @@ struct GameDetailView: View {
         }.resume()
     }
 
-    func toggleFavorite() {
-        isFavorite.toggle()
-        saveFavoriteStatus()
-    }
-
-    func saveFavoriteStatus() {
-    }
-
+    // Check if game is already favorited
     func checkIfFavorite() {
+        guard let game = game else { return }
+        isFavorite = favoriteGames.contains { $0.id == game.id }
+    }
+
+    // Toggle favorite status
+    func toggleFavorite() {
+        guard let game = game else { return }
+
+        if isFavorite {
+            // Remove from favorites
+            if let existingFavorite = favoriteGames.first(where: { $0.id == game.id }) {
+                modelContext.delete(existingFavorite)
+            }
+        } else {
+            // Save new favorite
+            let newFavorite = FavoriteGame(
+                id: game.id,
+                name: game.name,
+                cover: game.cover,
+                release_date: game.release_date,
+                summary: game.summary,
+                genres: game.genres,
+                platforms: game.platforms
+            )
+            modelContext.insert(newFavorite)
+        }
+
+        isFavorite.toggle()
     }
 }
 
+@available(iOS 17.0, *)
 struct GameDetailView_Preview: PreviewProvider {
     static var previews: some View {
         GameDetailView(gameId: 1, isPresented: .constant(true))
+            .modelContainer(for: FavoriteGame.self) // Ensures preview works
     }
 }
