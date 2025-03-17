@@ -16,6 +16,9 @@ struct SearchView: View {
     var searchText: String
     @Environment(\.presentationMode) var presentationMode
     
+    @AppStorage("isDarkMode") private var isDarkMode = false
+
+    
     var body: some View {
         VStack {
             if isLoading {

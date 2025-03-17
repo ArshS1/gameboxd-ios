@@ -5,6 +5,7 @@ import SwiftData
 struct FavoriteView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var favoriteGames: [FavoriteGame]
+    @AppStorage("isDarkMode") private var isDarkMode = false
 
     var body: some View {
         NavigationView {

@@ -1,3 +1,10 @@
+//
+//  GameDetailView.swift
+//  gameboxd
+//
+//  Created by Arshdeep Singh on 2/17/25.
+//
+
 import SwiftUI
 import SwiftData
 
@@ -5,20 +12,27 @@ import SwiftData
 struct GameDetailView: View {
     var gameId: Int
     @Binding var isPresented: Bool
-    @Environment(\.modelContext) private var modelContext
+    @Environment(\ .modelContext) private var modelContext
     @Query private var favoriteGames: [FavoriteGame]
+    @Query private var savedGames: [SavedGame]
 
     @State private var game: Game?
     @State private var isLoading = true
     @State private var urlString: String = ""
     @State private var isFavorite = false
+    @State private var showLogPopup = false
+    @State private var rating: Int = 0
+    @State private var feedback: String = ""
+    @State private var gameName: String = ""
 
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    
     var body: some View {
         ZStack {
             VStack {
                 if let game = game {
                     ScrollView {
-                        VStack {
+                        VStack(alignment: .center) {
                             AsyncImage(url: URL(string: game.cover)) { image in
                                 image.resizable()
                                     .scaledToFit()
@@ -36,62 +50,85 @@ struct GameDetailView: View {
                                 .padding()
 
                             Text("Release Date: \(game.release_date ?? "Not Available")")
-                                .font(.title2)
-                                .foregroundColor(.gray)
-                                .padding(.bottom, 20)
+                                                           .font(.title2)
+                                                           .foregroundColor(.gray)
+                                                           .padding(.bottom, 20)
 
-                            if let summary = game.summary {
-                                Text(summary)
-                                    .font(.body)
-                                    .padding()
-                            }
+                                                       if let summary = game.summary {
+                                                           Text(summary)
+                                                               .font(.body)
+                                                               .padding()
+                                                       }
 
-                            if let genres = game.genres, !genres.isEmpty {
-                                Text("Genres")
-                                    .font(.headline)
-                                    .padding(.top, 10)
-                                
-                                ForEach(genres, id: \.self) { genre in
-                                    Text(genre)
-                                        .font(.subheadline)
-                                        .padding(.bottom, 2)
-                                }
-                            }
+                                                       if let genres = game.genres, !genres.isEmpty {
+                                                           VStack(alignment: .leading) {
+                                                               Text("Genres")
+                                                                   .font(.headline)
+                                                                   .padding(.top, 10)
 
-                            if !game.platforms.isEmpty {
-                                Text("Platforms")
-                                    .font(.headline)
-                                    .padding(.top, 10)
-                                ForEach(game.platforms, id: \.name) { platform in
+                                                               ForEach(genres, id: \ .self) { genre in
+                                                                   Text(genre)
+                                                                       .font(.subheadline)
+                                                                       .padding(.bottom, 2)
+                                                               }
+                                                           }
+                                                           .frame(maxWidth: .infinity, alignment: .leading)
+                                                       }
+
+                                                       if !game.platforms.isEmpty {
+                                                           VStack(alignment: .leading) {
+                                                               Text("Platforms")
+                                                                   .font(.headline)
+                                                                   .padding(.top, 10)
+                                                               ForEach(game.platforms, id: \ .name) { platform in
+                                                                   HStack {
+                                                                       if let logoURL = platform.logo_url, let url = URL(string: logoURL) {
+                                                                           AsyncImage(url: url) { image in
+                                                                               image.resizable()
+                                                                                   .scaledToFit()
+                                                                                   .frame(width: 30, height: 30)
+                                                                           } placeholder: {
+                                                                               ProgressView()
+                                                                           }
+                                                                       }
+                                                                       Text(platform.name)
+                                                                           .font(.subheadline)
+                                                                   }
+                                                                   .padding(.bottom, 2)
+                                                               }
+                                                           }
+                                                           .frame(maxWidth: .infinity, alignment: .leading)
+                                                       }
+
+                            
+                            HStack(spacing: 20) {
+                                Button(action: {
+                                    toggleFavorite()
+                                }) {
                                     HStack {
-                                        if let logoURL = platform.logo_url, let url = URL(string: logoURL) {
-                                            AsyncImage(url: url) { image in
-                                                image.resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: 30, height: 30)
-                                            } placeholder: {
-                                                ProgressView()
-                                            }
-                                        }
-                                        Text(platform.name)
-                                            .font(.subheadline)
+                                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                                            .foregroundColor(isFavorite ? .red : .gray)
+                                        Text(isFavorite ? "Unfavorite" : "Favorite")
+                                            .foregroundColor(isDarkMode ? .white : .black)
                                     }
-                                    .padding(.bottom, 2)
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(10)
                                 }
-                            }
 
-                            Button(action: {
-                                toggleFavorite()
-                            }) {
-                                HStack {
-                                    Image(systemName: isFavorite ? "heart.fill" : "heart")
-                                        .foregroundColor(isFavorite ? .red : .gray)
-                                    Text(isFavorite ? "Unfavorite" : "Favorite")
-                                        .foregroundColor(.black)
+                                Button(action: {
+                                    showLogPopup = true
+                                }) {
+                                    HStack {
+                                        Image(systemName: "pencil")
+                                            .foregroundColor(.blue)
+                                        Text("Log")
+                                            .foregroundColor(isDarkMode ? .white : .black)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(10)
                                 }
-                                .padding()
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
                             }
                             .padding(.top, 20)
                         }
@@ -113,12 +150,65 @@ struct GameDetailView: View {
             fetchGameDetails()
             checkIfFavorite()
         }
+        .sheet(isPresented: $showLogPopup) {
+            VStack {
+                if let game = game {
+                    AsyncImage(url: URL(string: game.cover)) { image in
+                        image.resizable()
+                            .scaledToFit()
+                            .frame(width: 150, height: 200)
+                            .cornerRadius(10)
+                            .padding()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                }
+                
+                Text("Rate this Game")
+                    .font(.headline)
+                    .padding()
+
+                HStack {
+                    ForEach(1..<6) { star in
+                        Image(systemName: star <= rating ? "star.fill" : "star")
+                            .foregroundColor(star <= rating ? .yellow : .gray)
+                            .onTapGesture {
+                                rating = star
+                            }
+                    }
+                }
+                .padding()
+
+                TextField("Write your feedback...", text: $feedback)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+
+                Button("Save") {
+                    saveGameLog()
+                    showLogPopup = false
+                }
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+            }
+            .padding()
+        }
+    }
+    
+    func saveGameLog() {
+        guard let game = game else { return }
+        let newSavedGame = SavedGame(name: gameName, cover: game.cover, rating: rating, feedback: feedback)
+        modelContext.insert(newSavedGame)
+        
+        // Print a confirmation message
+        print("Game Logged: \(gameName), Rating: \(rating), Feedback: \(feedback)")
     }
 
+    
     // Fetch game details from API
     func fetchGameDetails() {
         let urlString = "https://arshhhyyy.pythonanywhere.com/games/getgame/\(gameId)"
-        self.urlString = urlString
 
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
@@ -139,6 +229,7 @@ struct GameDetailView: View {
                         let decodedDictionary = try JSONDecoder().decode([String: Game].self, from: data)
                         if let game = decodedDictionary.values.first {
                             self.game = game
+                            self.gameName = game.name
                             checkIfFavorite() // Ensure favorite status is checked when game loads
                         } else {
                             print("Error: No game found")
