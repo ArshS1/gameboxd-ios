@@ -60,45 +60,50 @@ struct GameDetailView: View {
                                                                .padding()
                                                        }
 
-                                                       if let genres = game.genres, !genres.isEmpty {
-                                                           VStack(alignment: .leading) {
-                                                               Text("Genres")
-                                                                   .font(.headline)
-                                                                   .padding(.top, 10)
+                            HStack(alignment: .top, spacing: 20) {
+                                if !game.platforms.isEmpty {
+                                    VStack(alignment: .leading) {
+                                        Text("Platforms")
+                                            .font(.headline)
+                                            .padding(.top, 10)
 
-                                                               ForEach(genres, id: \ .self) { genre in
-                                                                   Text(genre)
-                                                                       .font(.subheadline)
-                                                                       .padding(.bottom, 2)
-                                                               }
-                                                           }
-                                                           .frame(maxWidth: .infinity, alignment: .leading)
-                                                       }
+                                        ForEach(game.platforms, id: \.name) { platform in
+                                            HStack {
+                                                if let logoURL = platform.logo_url, let url = URL(string: logoURL) {
+                                                    AsyncImage(url: url) { image in
+                                                        image.resizable()
+                                                            .scaledToFit()
+                                                            .frame(width: 30, height: 30)
+                                                    } placeholder: {
+                                                        ProgressView()
+                                                    }
+                                                }
+                                                Text(platform.name)
+                                                    .font(.subheadline)
+                                            }
+                                            .padding(.bottom, 2)
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                if let genres = game.genres, !genres.isEmpty {
+                                    VStack(alignment: .leading) {
+                                        Text("Genres")
+                                            .font(.headline)
+                                            .padding(.top, 10)
 
-                                                       if !game.platforms.isEmpty {
-                                                           VStack(alignment: .leading) {
-                                                               Text("Platforms")
-                                                                   .font(.headline)
-                                                                   .padding(.top, 10)
-                                                               ForEach(game.platforms, id: \ .name) { platform in
-                                                                   HStack {
-                                                                       if let logoURL = platform.logo_url, let url = URL(string: logoURL) {
-                                                                           AsyncImage(url: url) { image in
-                                                                               image.resizable()
-                                                                                   .scaledToFit()
-                                                                                   .frame(width: 30, height: 30)
-                                                                           } placeholder: {
-                                                                               ProgressView()
-                                                                           }
-                                                                       }
-                                                                       Text(platform.name)
-                                                                           .font(.subheadline)
-                                                                   }
-                                                                   .padding(.bottom, 2)
-                                                               }
-                                                           }
-                                                           .frame(maxWidth: .infinity, alignment: .leading)
-                                                       }
+                                        ForEach(genres, id: \.self) { genre in
+                                            Text(genre)
+                                                .font(.subheadline)
+                                                .padding(.bottom, 2)
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+
 
                             
                             HStack(spacing: 20) {
