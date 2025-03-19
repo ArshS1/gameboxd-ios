@@ -41,8 +41,8 @@ struct GameDetailView: View {
                             } placeholder: {
                                 ProgressView()
                             }
-                            .padding(.top, 40)
-
+                            .padding(.top, 10)
+                            Divider().background(isDarkMode ? Color.white : Color.black)
                             Text(game.name)
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
@@ -52,7 +52,7 @@ struct GameDetailView: View {
                             Text("Release Date: \(game.release_date ?? "Not Available")")
                                                            .font(.title2)
                                                            .foregroundColor(.gray)
-                                                           .padding(.bottom, 20)
+                                                           .padding(.bottom, 10)
 
                                                        if let summary = game.summary {
                                                            Text(summary)
@@ -104,7 +104,7 @@ struct GameDetailView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
 
-
+                            Divider().background(isDarkMode ? Color.white : Color.black)
                             
                             HStack(spacing: 20) {
                                 Button(action: {

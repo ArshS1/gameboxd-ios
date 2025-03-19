@@ -70,16 +70,16 @@ struct ContentView: View {
                         }
                     }
                 } else if selectedTab == 1 {
-                    UserView()
-                } else if selectedTab == 2 {
                     FavoriteView()
+                } else if selectedTab == 2 {
+                    UserView()
                 }
                 
                 // Tab Bar
                 HStack {
                     tabBarItem(icon: "list.bullet", text: "Feed", tabIndex: 0)
-                    tabBarItem(icon: "person.circle", text: "Profile", tabIndex: 1)
-                    tabBarItem(icon: "star.fill", text: "Favorites", tabIndex: 2)
+                    tabBarItem(icon: "star.fill", text: "Games", tabIndex: 1)
+                    tabBarItem(icon: "person.circle", text: "Profile", tabIndex: 2)
                 }
                 .background(isDarkMode ? Color(.black) : Color(.systemGray6))
                 .padding(.bottom, 10)
