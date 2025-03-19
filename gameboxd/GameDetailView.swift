@@ -42,17 +42,18 @@ struct GameDetailView: View {
                                 ProgressView()
                             }
                             .padding(.top, 10)
-                            Divider().background(isDarkMode ? Color.white : Color.black)
                             Text(game.name)
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .multilineTextAlignment(.center)
                                 .padding()
 
+                            Divider().background(isDarkMode ? Color.white : Color.black).padding()
+
                             Text("Release Date: \(game.release_date ?? "Not Available")")
                                                            .font(.title2)
                                                            .foregroundColor(.gray)
-                                                           .padding(.bottom, 10)
+                                                           .padding(.bottom, 1)
 
                                                        if let summary = game.summary {
                                                            Text(summary)
@@ -60,7 +61,7 @@ struct GameDetailView: View {
                                                                .padding()
                                                        }
 
-                            HStack(alignment: .top, spacing: 20) {
+                            HStack(alignment: .top, spacing: 10) {
                                 if !game.platforms.isEmpty {
                                     VStack(alignment: .leading) {
                                         Text("Platforms")

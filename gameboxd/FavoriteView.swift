@@ -15,9 +15,6 @@ struct FavoriteView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(.systemGray6)
-                    .edgesIgnoringSafeArea(.all)
-
                 VStack {
                     Text("Favorite Games")
                         .font(.title2)
