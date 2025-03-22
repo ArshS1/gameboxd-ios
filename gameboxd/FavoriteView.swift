@@ -15,6 +15,10 @@ struct FavoriteView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                // Set a single background color
+                Color(.systemBackground)
+                    .edgesIgnoringSafeArea(.all)
+                
                 VStack {
                     Text("Favorite Games")
                         .font(.title2)
@@ -48,66 +52,70 @@ struct FavoriteView: View {
                             }
                             .onDelete(perform: deleteFavorite)
                         }
+                        .listStyle(PlainListStyle())
+                        .background(Color(.systemBackground)) // Same background
                     }
                     Spacer()
 
-            Text("Saved Games")
-                .font(.title2)
-                .padding(.top, 20)
+                    Text("Saved Games")
+                        .font(.title2)
+                        .padding(.top, 5)
 
-            if savedGames.isEmpty {
-                Text("No saved games found")
-                    .foregroundColor(.gray)
-                    .padding()
-            } else {
-                List {
-                    ForEach(savedGames) { game in
-                        HStack {
-                            AsyncImage(url: URL(string: game.cover)) { image in
-                                image.resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 75)
-                                    .cornerRadius(10)
-                                    .overlay(RoundedRectangle(cornerRadius: 10)
-                                                .stroke(Color.white, lineWidth: 2))
-                            } placeholder: {
-                                ProgressView()
-                                    .frame(width: 50, height: 75)
-                            }
+                    if savedGames.isEmpty {
+                        Text("No saved games found")
+                            .foregroundColor(.gray)
+                            .padding()
+                    } else {
+                        List {
+                            ForEach(savedGames) { game in
+                                HStack {
+                                    AsyncImage(url: URL(string: game.cover)) { image in
+                                        image.resizable()
+                                            .scaledToFit()
+                                            .frame(width: 50, height: 75)
+                                            .cornerRadius(10)
+                                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(Color.white, lineWidth: 2))
+                                    } placeholder: {
+                                        ProgressView()
+                                            .frame(width: 50, height: 75)
+                                    }
 
-                            VStack(alignment: .leading) {
-                                Text(game.name)
-                                    .font(.headline)
-                                    .foregroundColor(.primary)
+                                    VStack(alignment: .leading) {
+                                        Text(game.name)
+                                            .font(.headline)
+                                            .foregroundColor(.primary)
 
-                                Text(game.feedback ?? "No feedback available")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                            }
-                            .padding(.leading, 8)
+                                        Text(game.feedback ?? "No feedback available")
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
+                                    .padding(.leading, 8)
 
-                            Spacer()
+                                    Spacer()
 
-                            HStack {
-                                ForEach(0..<5) { index in
-                                    Image(systemName: index < game.rating ? "star.fill" : "star")
-                                        .foregroundColor(.yellow)
+                                    HStack {
+                                        ForEach(0..<5) { index in
+                                            Image(systemName: index < game.rating ? "star.fill" : "star")
+                                                .foregroundColor(.yellow)
+                                        }
+                                    }
+                                    .padding(.leading, 8)
                                 }
+                                .padding(.vertical, 5)
                             }
-                            .padding(.leading, 8)
                         }
-                        .padding(.vertical, 5)
+                        .listStyle(PlainListStyle())
+                        .background(Color(.systemBackground)) // Same background
                     }
                 }
-            }
-                }
+                .padding(.horizontal)
                 .navigationBarTitle("Games", displayMode: .inline)
                 .toolbar {
                     EditButton()
                 }
             }
         }
-        
     }
 
     func deleteFavorite(at offsets: IndexSet) {
