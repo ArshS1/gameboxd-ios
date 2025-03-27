@@ -57,7 +57,7 @@ struct FavoriteView: View {
                     }
                     Spacer()
 
-                    Text("Saved Games")
+                    Text("Personal Games")
                         .font(.title2)
                         .padding(.top, 5)
 
