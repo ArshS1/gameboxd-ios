@@ -78,7 +78,7 @@ struct ContentView: View {
                 // Tab Bar
                 HStack {
                     tabBarItem(icon: "list.bullet", text: "Feed", tabIndex: 0)
-                    tabBarItem(icon: "star.fill", text: "Games", tabIndex: 1)
+                    tabBarItem(icon: "gamecontroller", text: "Games", tabIndex: 1)
                     tabBarItem(icon: "person.circle", text: "Profile", tabIndex: 2)
                 }
                 .background(isDarkMode ? Color(.black) : Color(.systemGray6))
