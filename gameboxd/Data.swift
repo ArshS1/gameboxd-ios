@@ -18,8 +18,9 @@ class FavoriteGame: Identifiable {
     var summary: String?
     var genres: [String]?
     var platformsJSON: String?
+    var gameId: Int?
 
-    init(id: Int, name: String, cover: String, release_date: String?, summary: String?, genres: [String]?, platforms: [Platform]) {
+    init(id: Int, name: String, cover: String, release_date: String?, summary: String?, genres: [String]?, platforms: [Platform], gameId: Int?) {
         self.id = id
         self.name = name
         self.cover = cover
@@ -27,6 +28,7 @@ class FavoriteGame: Identifiable {
         self.summary = summary
         self.genres = genres
         self.platformsJSON = try? encodePlatforms(platforms)
+        self.gameId = gameId
     }
 
     var platforms: [Platform] {
@@ -58,14 +60,16 @@ class SavedGame: Identifiable {
     var rating: Int
     var feedback: String
     var genresJSON: String?  // Store genres as a JSON string
+    var gameId: Int?
 
-    init(name: String, cover: String, rating: Int, feedback: String, genres: [String]? = nil) {
+    init(name: String, cover: String, rating: Int, feedback: String, genres: [String]? = nil, gameId: Int?)  {
         self.id = UUID()
         self.name = name
         self.cover = cover
         self.rating = rating
         self.feedback = feedback
         self.genresJSON = try? encodeGenres(genres)
+        self.gameId = gameId
     }
 
     // Computed property to get genres as [String] when needed

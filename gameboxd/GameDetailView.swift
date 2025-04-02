@@ -62,7 +62,10 @@ struct GameDetailView: View {
                                                        }
 
                             HStack(alignment: .top, spacing: 10) {
+                                Divider().background(isDarkMode ? Color.white : Color.black).padding()
+
                                 if !game.platforms.isEmpty {
+
                                     VStack(alignment: .leading) {
                                         Text("Platforms")
                                             .font(.headline)
@@ -204,7 +207,7 @@ struct GameDetailView: View {
     
     func saveGameLog() {
         guard let game = game else { return }
-        let newSavedGame = SavedGame(name: gameName, cover: game.cover, rating: rating, feedback: feedback)
+        let newSavedGame = SavedGame(name: gameName, cover: game.cover, rating: rating, feedback: feedback, gameId: game.id)
         modelContext.insert(newSavedGame)
         
         // Print a confirmation message
@@ -276,7 +279,8 @@ struct GameDetailView: View {
                 release_date: game.release_date,
                 summary: game.summary,
                 genres: game.genres,
-                platforms: game.platforms
+                platforms: game.platforms,
+                gameId: game.id
             )
             modelContext.insert(newFavorite)
         }

@@ -33,7 +33,8 @@ struct SearchView: View {
                     List(searchResults) { game in
                         NavigationLink(destination: GameDetailView(gameId: game.id, isPresented: $isPresented)
                                         .navigationBarBackButtonHidden(true)
-                                        .navigationBarItems(leading: BackButton())) {
+                    .navigationBarItems(leading: BackButton())) {
+
                             HStack {
                                 AsyncImage(url: URL(string: game.cover)) { image in
                                     image.resizable()
@@ -120,14 +121,14 @@ struct SearchView: View {
 
 struct BackButton: View {
     @Environment(\.presentationMode) var presentationMode
-    
+
     var body: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
         }) {
             HStack {
                 Image(systemName: "chevron.left")
-                Text("Back to Search Results")
+                Text("Back")
             }
         }
     }
