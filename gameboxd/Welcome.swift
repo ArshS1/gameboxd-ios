@@ -1,3 +1,10 @@
+//
+//  SearchView.swift
+//  gameboxd
+//
+//  Created by Arshdeep Singh on 2/17/25.
+//
+
 import SwiftUI
 import GoogleSignIn
 

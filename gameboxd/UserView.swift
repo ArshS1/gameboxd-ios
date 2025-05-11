@@ -1,3 +1,10 @@
+//
+//  UserView.swift
+//  gameboxd
+//
+//  Created by Arshdeep Singh on 2/20/25.
+//
+
 import SwiftUI
 import GoogleSignIn
 import SwiftData
